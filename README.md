@@ -5,7 +5,8 @@ A new Flutter application.
 
 ## Screenshots
 <p>
-    <img src="/All Over.png alt="drawing" width="200"/>
+    <img src="/All Over.png" alt="drawing" width="200"/>
+    <img src="1.png" alt="drawing" width="200"/>
 </p>
 
 
