@@ -1,6 +1,8 @@
 import 'package:chatroom/services/firebase_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../models/user.dart';
+
 class FirebaseRepository {
   FirebaseMethods _firebaseMethods = FirebaseMethods();
 
@@ -15,4 +17,7 @@ class FirebaseRepository {
 
   Future<void> addDataToDb(FirebaseUser user) =>
       _firebaseMethods.addDataToDb(user);
+
+  Future<List<User>> fetchAllUsers(FirebaseUser user) =>
+      _firebaseMethods.fetchAllUsers(user);
 }
