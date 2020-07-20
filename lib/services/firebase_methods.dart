@@ -49,6 +49,7 @@ class FirebaseMethods {
 
   Future<void> addDataToDb(FirebaseUser currentUser) async {
     String username = Utils.getUsername(currentUser.email);
+    print("Update User to db");
 
     user = User(
         uid: currentUser.uid,
@@ -60,6 +61,9 @@ class FirebaseMethods {
     firestore
         .collection("users")
         .document(currentUser.uid)
-        .setData(user.toMap(user));
+        .setData(user.toMap(user))
+        .then((data) {
+      return print("Update User to db");
+    });
   }
 }
