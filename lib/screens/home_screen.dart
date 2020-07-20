@@ -1,3 +1,4 @@
+import 'package:chatroom/screens/pageviews/chat_list_screen.dart';
 import 'package:chatroom/utils/universal_variables.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   PageController pageController;
   int _page = 0;
-  double _labelFontSize = 10;
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     pageController = PageController();
   }
@@ -30,15 +31,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double _labelFontSize = 10;
+
     return Scaffold(
       backgroundColor: UniversalVariables.blackColor,
       body: PageView(
         children: <Widget>[
-          Center(
-              child: Text(
-            "Chat List Screen",
-            style: TextStyle(color: Colors.white),
-          )),
+          Container(
+            child: ChatListScreen(),
+          ),
           Center(
               child: Text(
             "Call Logs",
