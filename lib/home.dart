@@ -17,30 +17,30 @@ Color fbColor = hexToColor("#4267B2");
 Color gColor = hexToColor("#de5246");
 String imageurl = "/images/1.jpg";
 
-class home extends StatelessWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
+      home: MyHomePage(title: " Chatroom"),
     );
   }
 }
 
 String title = " Chatroom";
 
-class Home extends StatefulWidget {
-//  MyHomePage({Key key, this.title}) : super(key: key);
-
+class MyHomePage extends StatefulWidget {
+  final String title;
+  MyHomePage({Key key, this.title}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-int search_visible = 0;
+int searchVisible = 0;
 
-class _MyHomePageState extends State<Home> {
+class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
-    search_visible = 1;
+    searchVisible = 1;
   }
 
   Widget createBody() {
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<Home> {
         padding: const EdgeInsets.only(top: 20),
         child: Column(
           children: <Widget>[
-            search_visible == 1
+            searchVisible == 1
                 ? Row(
                     children: <Widget>[
                       Flexible(
@@ -88,7 +88,6 @@ class _MyHomePageState extends State<Home> {
                   )
                 : Container(),
             Container(
-//            color: Colors.red,
               height: 120,
               child: ListView.builder(
                   itemCount: stories.length + 1,

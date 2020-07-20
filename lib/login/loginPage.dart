@@ -1,6 +1,9 @@
-import 'package:chatroom/home.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../home.dart';
+import '../home.dart';
+
 Color hexToColor(String code) {
   return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
 }
@@ -13,22 +16,17 @@ Color fbColor = hexToColor("#4267B2");
 Color gColor = hexToColor("#de5246");
 
 String AppName = " Chatting";
-String logo= "images/logo1.png";
+String logo = "images/logo1.png";
 
 class loginPage extends StatefulWidget {
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-
 class _LoginPageState extends State<loginPage> {
-
   @override
-
   @override
   Widget build(BuildContext context) {
-
     Widget createBody() {
       return Material(
 //        color: Colors.black,
@@ -44,7 +42,7 @@ class _LoginPageState extends State<loginPage> {
                       Navigator.pop(context, false);
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 20,top: 50),
+                      padding: const EdgeInsets.only(left: 20, top: 50),
                       child: Icon(
                         Icons.arrow_back_ios,
                         size: 35,
@@ -58,16 +56,15 @@ class _LoginPageState extends State<loginPage> {
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20,left: 20),
+              padding: const EdgeInsets.only(top: 20, left: 20),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
                   "Sign In",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    color: Colors.black
-                  ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Colors.black),
                 ),
               ),
             ),
@@ -77,18 +74,18 @@ class _LoginPageState extends State<loginPage> {
             Container(
               height: 100,
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
 //                    return _NavigateToLogin(context);
                 },
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 5),
                     child: TextField(
                       cursorWidth: 10,
                       obscureText: false,
                       maxLengthEnforced: false,
                       cursorColor: fbColor,
-
                       decoration: InputDecoration(
                         fillColor: Colors.white,
                         focusColor: Colors.white,
@@ -100,9 +97,9 @@ class _LoginPageState extends State<loginPage> {
                             style: BorderStyle.solid,
                           ),
                         ),
-                      hintText: "Enter Your Email adress",
+                        hintText: "Enter Your Email adress",
 //                          labelText: 'Email',
-                    ),
+                      ),
                     ),
                   ),
                 ),
@@ -110,12 +107,13 @@ class _LoginPageState extends State<loginPage> {
             ),
             Container(
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
 //                    return _NavigateToLogin(context);
                 },
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 5),
                     child: TextField(
                       cursorWidth: 10,
                       obscureText: false,
@@ -128,7 +126,6 @@ class _LoginPageState extends State<loginPage> {
                         hintText: "Password",
 //                          labelText: 'Email',
                       ),
-
                     ),
                   ),
                 ),
@@ -138,12 +135,12 @@ class _LoginPageState extends State<loginPage> {
               height: 50,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 50,right: 50,top: 10),
+              padding: const EdgeInsets.only(left: 50, right: 50, top: 10),
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   return Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 },
                 child: Container(
@@ -159,9 +156,7 @@ class _LoginPageState extends State<loginPage> {
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold
-
-                      ),
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   height: 60,
@@ -174,10 +169,9 @@ class _LoginPageState extends State<loginPage> {
             Text(
               "Or",
               style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 25,
-                  fontWeight: FontWeight.w500,
-
+                color: Colors.grey,
+                fontSize: 25,
+                fontWeight: FontWeight.w500,
               ),
             ),
             SizedBox(
@@ -185,12 +179,12 @@ class _LoginPageState extends State<loginPage> {
             ),
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.only(left: 40,right: 40,top: 10),
+                padding: const EdgeInsets.only(left: 40, right: 40, top: 10),
                 child: GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     return Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                     );
                   },
                   child: Container(
@@ -203,7 +197,6 @@ class _LoginPageState extends State<loginPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-
                           Padding(
                             padding: const EdgeInsets.only(right: 20),
                             child: Container(
@@ -222,8 +215,7 @@ class _LoginPageState extends State<loginPage> {
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
@@ -240,12 +232,12 @@ class _LoginPageState extends State<loginPage> {
             ),
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.only(left: 40,right: 40,top: 10),
+                padding: const EdgeInsets.only(left: 40, right: 40, top: 10),
                 child: GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     return Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                     );
                   },
                   child: Container(
@@ -253,9 +245,6 @@ class _LoginPageState extends State<loginPage> {
                     decoration: BoxDecoration(
                       color: fbColor,
                       borderRadius: BorderRadius.circular(400),
-                      boxShadow: [
-//                        BoxShadow(color: Colors.amber),
-                      ],
                     ),
                     child: Center(
                       child: Row(
@@ -272,11 +261,9 @@ class _LoginPageState extends State<loginPage> {
                           Text(
                             "Login with Facebook",
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-
-                            ),
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -286,12 +273,11 @@ class _LoginPageState extends State<loginPage> {
                 ),
               ),
             ),
-
           ],
         ),
       );
-
     }
+
     return Scaffold(
 //      appBar: AppBar(
 //        backgroundColor: Colors.white,
