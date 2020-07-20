@@ -1,3 +1,4 @@
+import 'package:chatroom/screens/pageviews/chat_list_screen.dart';
 import 'package:chatroom/utils/universal_variables.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: UniversalVariables.blackColor,
       body: PageView(
         children: <Widget>[
-          // Container(child: ChatListScreen(),),
+          Container(
+            child: ChatListScreen(),
+          ),
           Center(
               child: Text(
             "Call Logs",
