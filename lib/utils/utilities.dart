@@ -7,6 +7,8 @@ class Utils {
     List<String> nameSplit = name.split(" ");
     String firstNameInitial = nameSplit[0][0];
     String lastNameInitial = nameSplit[1][0];
-    return firstNameInitial + lastNameInitial;
+    String finalName = firstNameInitial + lastNameInitial;
+    if (finalName == null) finalName = "U";
+    return finalName;
   }
 }
