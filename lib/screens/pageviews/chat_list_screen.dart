@@ -3,9 +3,7 @@ import 'package:chatroom/widgets/appbar.dart';
 import 'package:chatroom/widgets/custom_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:chatroom/services/firebase_repository.dart';
-
-import '../../utils/utilities.dart';
-
+import 'package:chatroom/utils/utilities.dart';
 class ChatListScreen extends StatefulWidget {
   @override
   _ChatListScreenState createState() => _ChatListScreenState();
@@ -17,7 +15,6 @@ final FirebaseRepository _repository = FirebaseRepository();
 class _ChatListScreenState extends State<ChatListScreen> {
   String currentUserId;
   String initials;
-
   @override
   void initState() {
     super.initState();
@@ -46,8 +43,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
             Icons.search,
             color: Colors.white,
           ),
-          onPressed: () {},
+                    onPressed: () {
+            Navigator.pushNamed(context, "/search_screen");
+          },
         ),
+        
         IconButton(
           icon: Icon(
             Icons.more_vert,
