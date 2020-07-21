@@ -1,12 +1,11 @@
+import 'package:chatroom/models/user.dart';
 import 'package:chatroom/screens/chatscreens/chat_screen.dart';
+import 'package:chatroom/services/firebase_repository.dart';
 import 'package:chatroom/utils/universal_variables.dart';
 import 'package:chatroom/widgets/custom_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
-
-import '../models/user.dart';
-import '../services/firebase_repository.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -22,7 +21,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _repository.getCurrentUser().then((FirebaseUser user) {
