@@ -33,8 +33,6 @@ dependencies:
   firebase_auth: ^0.16.1
   shimmer:
   gradient_app_bar: ^0.0.1
-
-  shimmer:
   
   ## firebase dependencies
   cloud_firestore: ^0.13.7
