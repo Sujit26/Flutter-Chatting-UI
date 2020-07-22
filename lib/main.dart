@@ -1,4 +1,5 @@
 import 'package:chatroom/provider/image_upload_provider.dart';
+import 'package:chatroom/provider/user_provider.dart';
 import 'package:chatroom/screens/home_screen.dart';
 import 'package:chatroom/screens/login_screen.dart';
 import 'package:chatroom/screens/search_screen.dart';
@@ -19,8 +20,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ImageUploadProvider>(
-      create: (context) => ImageUploadProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
       child: MaterialApp(
         title: "Skype Clone",
         debugShowCheckedModeBanner: false,

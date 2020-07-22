@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:chatroom/constants/strings.dart';
 import 'package:chatroom/enum/view_state.dart';
 import 'package:chatroom/models/message.dart';
@@ -6,6 +7,8 @@ import 'package:chatroom/models/user.dart';
 import 'package:chatroom/provider/image_upload_provider.dart';
 import 'package:chatroom/screens/chatscreens/widgets/cached_image.dart';
 import 'package:chatroom/services/firebase_repository.dart';
+import 'package:chatroom/utils/call_utilities.dart';
+import 'package:chatroom/utils/permissions.dart';
 import 'package:chatroom/utils/universal_variables.dart';
 import 'package:chatroom/utils/utilities.dart';
 import 'package:chatroom/widgets/appbar.dart';
@@ -202,7 +205,12 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           )
         : message.photoUrl != null
-            ? CachedImage(url: message.photoUrl)
+            ? CachedImage(
+                message.photoUrl,
+                height: 250,
+                width: 250,
+                radius: 10,
+              )
             : Text("Url was null");
   }
 
@@ -458,7 +466,14 @@ class _ChatScreenState extends State<ChatScreen> {
           icon: Icon(
             Icons.video_call,
           ),
-          onPressed: () {},
+          onPressed: () async =>
+              await Permissions.cameraAndMicrophonePermissionsGranted()
+                  ? CallUtils.dial(
+                      from: sender,
+                      to: widget.receiver,
+                      context: context,
+                    )
+                  : {},
         ),
         IconButton(
           icon: Icon(
