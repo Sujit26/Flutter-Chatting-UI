@@ -22,31 +22,17 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController textFieldController = TextEditingController();
   FirebaseRepository _repository = FirebaseRepository();
 
+  ScrollController _listScrollController = ScrollController();
+
   User sender;
 
   String _currentUserId;
 
-  bool isWriting = false;
-
   FocusNode textFieldFocus = FocusNode();
 
+  bool isWriting = false;
+
   bool showEmojiPicker = false;
-
-  showKeyboard() => textFieldFocus.requestFocus();
-
-  hideKeyboard() => textFieldFocus.unfocus();
-
-  hideEmojiContainer() {
-    setState(() {
-      showEmojiPicker = false;
-    });
-  }
-
-  showEmojiContainer() {
-    setState(() {
-      showEmojiPicker = true;
-    });
-  }
 
   @override
   void initState() {
@@ -62,6 +48,22 @@ class _ChatScreenState extends State<ChatScreen> {
           profilePhoto: user.photoUrl,
         );
       });
+    });
+  }
+
+  showKeyboard() => textFieldFocus.requestFocus();
+
+  hideKeyboard() => textFieldFocus.unfocus();
+
+  hideEmojiContainer() {
+    setState(() {
+      showEmojiPicker = false;
+    });
+  }
+
+  showEmojiContainer() {
+    setState(() {
+      showEmojiPicker = true;
     });
   }
 
@@ -82,7 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget emojiContainer() {
+  emojiContainer() {
     return EmojiPicker(
       bgColor: UniversalVariables.separatorColor,
       indicatorColor: UniversalVariables.blueColor,
@@ -112,9 +114,20 @@ class _ChatScreenState extends State<ChatScreen> {
         if (snapshot.data == null) {
           return Center(child: CircularProgressIndicator());
         }
+
+        // SchedulerBinding.instance.addPostFrameCallback((_) {
+        //   _listScrollController.animateTo(
+        //     _listScrollController.position.minScrollExtent,
+        //     duration: Duration(milliseconds: 250),
+        //     curve: Curves.easeInOut,
+        //   );
+        // });
+
         return ListView.builder(
           padding: EdgeInsets.all(10),
           itemCount: snapshot.data.documents.length,
+          reverse: true,
+          controller: _listScrollController,
           itemBuilder: (context, index) {
             // mention the arrow syntax if you get the time
             return chatMessageItem(snapshot.data.documents[index]);
@@ -309,35 +322,54 @@ class _ChatScreenState extends State<ChatScreen> {
             width: 5,
           ),
           Expanded(
-            child: TextField(
-              controller: textFieldController,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-              onChanged: (val) {
-                (val.length > 0 && val.trim() != "")
-                    ? setWritingTo(true)
-                    : setWritingTo(false);
-              },
-              decoration: InputDecoration(
-                hintText: "Type a message",
-                hintStyle: TextStyle(
-                  color: UniversalVariables.greyColor,
-                ),
-                border: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(50.0),
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                TextField(
+                  controller: textFieldController,
+                  focusNode: textFieldFocus,
+                  onTap: () => hideEmojiContainer(),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                  onChanged: (val) {
+                    (val.length > 0 && val.trim() != "")
+                        ? setWritingTo(true)
+                        : setWritingTo(false);
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Type a message",
+                    hintStyle: TextStyle(
+                      color: UniversalVariables.greyColor,
                     ),
-                    borderSide: BorderSide.none),
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                filled: true,
-                fillColor: UniversalVariables.separatorColor,
-                suffixIcon: GestureDetector(
-                  onTap: () {},
-                  child: Icon(Icons.face),
+                    border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(50.0),
+                        ),
+                        borderSide: BorderSide.none),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    filled: true,
+                    fillColor: UniversalVariables.separatorColor,
+                  ),
                 ),
-              ),
+                IconButton(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onPressed: () {
+                    if (!showEmojiPicker) {
+                      // keyboard is visible
+                      hideKeyboard();
+                      showEmojiContainer();
+                    } else {
+                      //keyboard is hidden
+                      showKeyboard();
+                      hideEmojiContainer();
+                    }
+                  },
+                  icon: Icon(Icons.face),
+                ),
+              ],
             ),
           ),
           isWriting
