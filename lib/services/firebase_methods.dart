@@ -1,14 +1,23 @@
+import 'package:chatroom/constants/strings.dart';
 import 'package:chatroom/models/message.dart';
 import 'package:chatroom/models/user.dart';
+import 'package:chatroom/provider/image_upload_provider.dart';
 import 'package:chatroom/utils/utilities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirebaseMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore firestore = Firestore.instance;
+
+  static final Firestore _firestore = Firestore.instance;
+
+  StorageReference _storageReference;
 
   //user class
   User user = User();
@@ -32,14 +41,10 @@ class FirebaseMethods {
     return user;
   }
 
-  Future<void> signOut() async {
-    _googleSignIn.signOut();
-  }
-
   Future<bool> authenticateUser(FirebaseUser user) async {
     QuerySnapshot result = await firestore
-        .collection("users")
-        .where("email", isEqualTo: user.email)
+        .collection(USERS_COLLECTION)
+        .where(EMAIL_FIELD, isEqualTo: user.email)
         .getDocuments();
 
     final List<DocumentSnapshot> docs = result.documents;
@@ -50,7 +55,6 @@ class FirebaseMethods {
 
   Future<void> addDataToDb(FirebaseUser currentUser) async {
     String username = Utils.getUsername(currentUser.email);
-    print("Update User to db");
 
     user = User(
         uid: currentUser.uid,
@@ -60,19 +64,21 @@ class FirebaseMethods {
         username: username);
 
     firestore
-        .collection("users")
+        .collection(USERS_COLLECTION)
         .document(currentUser.uid)
-        .setData(user.toMap(user))
-        .then((data) {
-      return print("Update User to db");
-    });
+        .setData(user.toMap(user));
+  }
+
+  Future<void> signOut() async {
+    await _googleSignIn.signOut();
+    return await _auth.signOut();
   }
 
   Future<List<User>> fetchAllUsers(FirebaseUser currentUser) async {
     List<User> userList = List<User>();
 
     QuerySnapshot querySnapshot =
-        await firestore.collection("users").getDocuments();
+        await firestore.collection(USERS_COLLECTION).getDocuments();
     for (var i = 0; i < querySnapshot.documents.length; i++) {
       if (querySnapshot.documents[i].documentID != currentUser.uid) {
         userList.add(User.fromMap(querySnapshot.documents[i].data));
@@ -86,15 +92,74 @@ class FirebaseMethods {
     var map = message.toMap();
 
     await firestore
-        .collection("messages")
+        .collection(MESSAGES_COLLECTION)
         .document(message.senderId)
         .collection(message.receiverId)
         .add(map);
 
     return await firestore
-        .collection("messages")
+        .collection(MESSAGES_COLLECTION)
         .document(message.receiverId)
         .collection(message.senderId)
         .add(map);
+  }
+
+  Future<String> uploadImageToStorage(File imageFile) async {
+    // mention try catch later on
+
+    try {
+      _storageReference = FirebaseStorage.instance
+          .ref()
+          .child('${DateTime.now().millisecondsSinceEpoch}');
+      StorageUploadTask storageUploadTask =
+          _storageReference.putFile(imageFile);
+      var url = await (await storageUploadTask.onComplete).ref.getDownloadURL();
+      // print(url);
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void setImageMsg(String url, String receiverId, String senderId) async {
+    Message message;
+
+    message = Message.imageMessage(
+        message: "IMAGE",
+        receiverId: receiverId,
+        senderId: senderId,
+        photoUrl: url,
+        timestamp: Timestamp.now(),
+        type: 'image');
+
+    // create imagemap
+    var map = message.toImageMap();
+
+    // var map = Map<String, dynamic>();
+    await firestore
+        .collection(MESSAGES_COLLECTION)
+        .document(message.senderId)
+        .collection(message.receiverId)
+        .add(map);
+
+    firestore
+        .collection(MESSAGES_COLLECTION)
+        .document(message.receiverId)
+        .collection(message.senderId)
+        .add(map);
+  }
+
+  void uploadImage(File image, String receiverId, String senderId,
+      ImageUploadProvider imageUploadProvider) async {
+    // Set some loading value to db and show it to user
+    imageUploadProvider.setToLoading();
+
+    // Get url from the image bucket
+    String url = await uploadImageToStorage(image);
+
+    // Hide loading
+    imageUploadProvider.setToIdle();
+
+    setImageMsg(url, receiverId, senderId);
   }
 }
