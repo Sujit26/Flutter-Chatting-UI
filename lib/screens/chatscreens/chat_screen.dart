@@ -6,6 +6,7 @@ import 'package:chatroom/utils/universal_variables.dart';
 import 'package:chatroom/widgets/appbar.dart';
 import 'package:chatroom/widgets/custom_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -26,6 +27,26 @@ class _ChatScreenState extends State<ChatScreen> {
   String _currentUserId;
 
   bool isWriting = false;
+
+  FocusNode textFieldFocus = FocusNode();
+
+  bool showEmojiPicker = false;
+
+  showKeyboard() => textFieldFocus.requestFocus();
+
+  hideKeyboard() => textFieldFocus.unfocus();
+
+  hideEmojiContainer() {
+    setState(() {
+      showEmojiPicker = false;
+    });
+  }
+
+  showEmojiContainer() {
+    setState(() {
+      showEmojiPicker = true;
+    });
+  }
 
   @override
   void initState() {
@@ -55,8 +76,27 @@ class _ChatScreenState extends State<ChatScreen> {
             child: messageList(),
           ),
           chatControls(),
+          showEmojiPicker ? Container(child: emojiContainer()) : Container(),
         ],
       ),
+    );
+  }
+
+  Widget emojiContainer() {
+    return EmojiPicker(
+      bgColor: UniversalVariables.separatorColor,
+      indicatorColor: UniversalVariables.blueColor,
+      rows: 3,
+      columns: 7,
+      onEmojiSelected: (emoji, category) {
+        setState(() {
+          isWriting = true;
+        });
+
+        textFieldController.text = textFieldController.text + emoji.emoji;
+      },
+      recommendKeywords: ["face", "happy", "party", "sad"],
+      numRecommended: 50,
     );
   }
 
