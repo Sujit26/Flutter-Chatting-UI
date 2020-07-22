@@ -15,6 +15,9 @@ class FirebaseMethods {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   static final Firestore firestore = Firestore.instance;
 
+  static final CollectionReference _userCollection =
+      _firestore.collection(USERS_COLLECTION);
+
   static final Firestore _firestore = Firestore.instance;
 
   StorageReference _storageReference;
@@ -51,6 +54,15 @@ class FirebaseMethods {
 
     //if user is registered then length of list > 0 or else less than 0
     return docs.length == 0 ? true : false;
+  }
+
+  Future<User> getUserDetails() async {
+    FirebaseUser currentUser = await getCurrentUser();
+
+    DocumentSnapshot documentSnapshot =
+        await _userCollection.document(currentUser.uid).get();
+
+    return User.fromMap(documentSnapshot.data);
   }
 
   Future<void> addDataToDb(FirebaseUser currentUser) async {
