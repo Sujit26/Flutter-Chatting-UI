@@ -1,6 +1,6 @@
 import 'package:chatroom/models/user.dart';
 import 'package:chatroom/screens/chatscreens/chat_screen.dart';
-import 'package:chatroom/services/firebase_repository.dart';
+import 'package:chatroom/services/auth_methods.dart';
 import 'package:chatroom/utils/universal_variables.dart';
 import 'package:chatroom/widgets/custom_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,8 +13,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  FirebaseRepository _repository = FirebaseRepository();
-
+  final AuthMethods _authMethods = AuthMethods();
   List<User> userList;
   String query = "";
   TextEditingController searchController = TextEditingController();
@@ -23,8 +22,8 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
 
-    _repository.getCurrentUser().then((FirebaseUser user) {
-      _repository.fetchAllUsers(user).then((List<User> list) {
+    _authMethods.getCurrentUser().then((FirebaseUser user) {
+      _authMethods.fetchAllUsers(user).then((List<User> list) {
         setState(() {
           userList = list;
         });

@@ -3,7 +3,7 @@ import 'package:chatroom/provider/user_provider.dart';
 import 'package:chatroom/screens/home_screen.dart';
 import 'package:chatroom/screens/login_screen.dart';
 import 'package:chatroom/screens/search_screen.dart';
-import 'package:chatroom/services/firebase_repository.dart';
+import 'package:chatroom/services/auth_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FirebaseRepository _repository = FirebaseRepository();
+  final AuthMethods _authMethods = AuthMethods();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
         },
         theme: ThemeData(brightness: Brightness.dark),
         home: FutureBuilder(
-          future: _repository.getCurrentUser(),
+          future: _authMethods.getCurrentUser(),
           builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
             if (snapshot.hasData) {
               return HomeScreen();

@@ -1,8 +1,8 @@
+import 'package:chatroom/services/auth_methods.dart';
 import 'package:chatroom/utils/universal_variables.dart';
 import 'package:chatroom/widgets/appbar.dart';
 import 'package:chatroom/widgets/custom_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:chatroom/services/firebase_repository.dart';
 import 'package:chatroom/utils/utilities.dart';
 
 class ChatListScreen extends StatefulWidget {
@@ -11,7 +11,7 @@ class ChatListScreen extends StatefulWidget {
 }
 
 //global
-final FirebaseRepository _repository = FirebaseRepository();
+final AuthMethods _authMethods = AuthMethods();
 
 class _ChatListScreenState extends State<ChatListScreen> {
   String currentUserId;
@@ -19,7 +19,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   @override
   void initState() {
     super.initState();
-    _repository.getCurrentUser().then((user) {
+    _authMethods.getCurrentUser().then((user) {
       setState(() {
         currentUserId = user.uid;
         initials = Utils.getInitials(user.displayName);

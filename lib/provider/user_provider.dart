@@ -1,15 +1,15 @@
 import 'package:chatroom/models/user.dart';
-import 'package:chatroom/services/firebase_repository.dart';
+import 'package:chatroom/services/auth_methods.dart';
 import 'package:flutter/widgets.dart';
 
 class UserProvider with ChangeNotifier {
+  final AuthMethods _authMethods = AuthMethods();
   User _user;
-  FirebaseRepository _firebaseRepository = FirebaseRepository();
 
   User get getUser => _user;
 
   void refreshUser() async {
-    User user = await _firebaseRepository.getUserDetails();
+    User user = await _authMethods.getUserDetails();
     _user = user;
     notifyListeners();
   }
