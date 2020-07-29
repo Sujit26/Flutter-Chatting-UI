@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:chatroom/configs/agora_configs.dart';
+import 'package:chatroom/config/agora_configs.dart';
 import 'package:chatroom/models/call.dart';
 import 'package:chatroom/provider/user_provider.dart';
 import 'package:chatroom/services/call_methods.dart';

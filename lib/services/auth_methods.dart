@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chatroom/constants/strings.dart';
 import 'package:chatroom/enum/user_state.dart';
 import 'package:chatroom/models/user.dart';
@@ -110,8 +108,14 @@ class AuthMethods {
     return userList;
   }
 
-  Future<void> signOut() async {
-    await _googleSignIn.signOut();
-    return await _auth.signOut();
+  Future<bool> signOut() async {
+    try {
+      await _googleSignIn.signOut();
+      await _auth.signOut();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }
